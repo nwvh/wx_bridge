@@ -24,6 +24,7 @@ end
 ---@param id number
 ---@return table
 function B:GetPlayer(id)
+    Debug(GetInvokingResource(), "GetPlayer", id)
     if framework == "esx" then
         return ESX.GetPlayerFromId(id)
     elseif framework == "qb" then
@@ -35,6 +36,7 @@ end
 ---Returns all online players
 ---@return table
 function B:GetAllPlayers()
+    Debug(GetInvokingResource(), "GetAllPlayers")
     if framework == "esx" then
         return ESX.GetPlayers()
     end
@@ -45,6 +47,7 @@ end
 ---@param id number
 ---@return string
 function B:GetPlayerJob(id)
+    Debug(GetInvokingResource(), "GetPlayerJob", id)
     local xPlayer = BRIDGE:GetPlayer(id)
     return xPlayer.job.name
 end
@@ -53,6 +56,7 @@ end
 ---@param id number
 ---@return number
 function B:GetPlayerJobGrade(id)
+    Debug(GetInvokingResource(), "GetPlayerJobGrade", id)
     local xPlayer = BRIDGE:GetPlayer(id)
     if framework == "esx" then
         return xPlayer.getJob().grade
@@ -66,6 +70,7 @@ end
 ---@param playerId number
 ---@return boolean
 function B:HasPermission(playerId)
+    Debug(GetInvokingResource(), "HasPermission", playerId)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         return wx.AdminGroups[xPlayer.getGroup()]
@@ -83,6 +88,7 @@ end
 ---@param playerId number Target player ID
 ---@param amount number Amount to add
 function B:AddMoney(playerId, amount)
+    Debug(GetInvokingResource(), "AddMoney", playerId, amount)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         xPlayer.addMoney(amount)
@@ -93,6 +99,7 @@ end
 ---@param playerId number Target player ID
 ---@param amount number Amount to remove
 function B:RemoveMoney(playerId, amount)
+    Debug(GetInvokingResource(), "RemoveMoney", playerId, amount)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         xPlayer.removeMoney(amount)
@@ -103,6 +110,7 @@ end
 ---@param playerId number Target player ID
 ---@param amount number Amount to remove
 function B:RemoveBankMoney(playerId, amount)
+    Debug(GetInvokingResource(), "RemoveBankMoney", playerId, amount)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         xPlayer.removeAccountMoney("bank", amount)
@@ -113,6 +121,7 @@ end
 ---@param playerId number Target player ID
 ---@return number amount Player's money
 function B:GetMoney(playerId)
+    Debug(GetInvokingResource(), "GetMoney", playerId)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         return xPlayer.getMoney()
@@ -124,6 +133,7 @@ end
 ---@param playerId number Target player ID
 ---@return number amount Player's bank balance
 function B:GetBankMoney(playerId)
+    Debug(GetInvokingResource(), "GetBankMoney", playerId)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         return xPlayer.getAccount("bank").money
@@ -137,6 +147,7 @@ end
 ---@param amount number Amount to transfer
 ---@return boolean status, string statusMessage
 function B:TransferMoney(from, to, amount)
+    Debug(GetInvokingResource(), "TransferMoney", from, to, amount)
     if framework == "esx" then
         if not GetPlayerName(to) then return false, "Not Online" end -- Check if player is online
         local xPlayer = B:GetPlayer(from)
@@ -157,6 +168,7 @@ end
 ---@param item_name string Item name to give
 ---@param amount number Amount to give
 function B:AddItem(playerId, item_name, amount)
+    Debug(GetInvokingResource(), "AddItem", item_name, amount)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         xPlayer.addInventoryItem(item_name, amount)
@@ -168,6 +180,7 @@ end
 ---@param item_name string Item name to remove
 ---@param amount number Amount to remove
 function B:RemoveItem(playerId, item_name, amount)
+    Debug(GetInvokingResource(), "RemoveItem", playerId, item_name, amount)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         xPlayer.removeInventoryItem(item_name, amount)
@@ -179,6 +192,7 @@ end
 ---@param item_name string Item to check
 ---@return table
 function B:GetItem(playerId, item_name)
+    Debug(GetInvokingResource(), "GetItem", playerId, item_name)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         return xPlayer.getInventoryItem(item_name)
@@ -191,6 +205,7 @@ end
 ---@param item_name string Item Name
 ---@param amount number Item Count
 function B:CanCarryItem(playerId, item_name, amount)
+    Debug(GetInvokingResource(), "CanCarryItem", playerId, item_name, amount)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         return xPlayer.canCarryItem(item_name, amount)
@@ -203,6 +218,7 @@ end
 ---@param job_name string Job name
 ---@param job_grade number Job Grade
 function B:SetJob(playerId, job_name, job_grade)
+    Debug(GetInvokingResource(), "SetJob", playerId, job_name, job_grade)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         xPlayer.setJob(job_name, job_grade)
@@ -213,6 +229,7 @@ end
 ---@param playerId number Target player ID
 ---@return string license license: identifier
 function B:GetIdentifier(playerId)
+    Debug(GetInvokingResource(), "GetIdentifier", playerId)
     if framework == "esx" then
         local xPlayer = B:GetPlayer(playerId)
         return xPlayer.getIdentifier()
@@ -224,25 +241,97 @@ end
 ---@param playerId number Target player ID
 ---@return vector3 coords Player Coords
 function B:GetPlayerCoords(playerId)
+    Debug(GetInvokingResource(), "GetPlayerCoords", playerId)
     local ped = GetPlayerPed(playerId)
     return GetEntityCoords(ped)
 end
 
-exports("GetPlayer", B.GetPlayer)
-exports("GetAllPlayers", B.GetAllPlayers)
-exports("GetPlayerJob", B.GetPlayerJob)
-exports("GetPlayerJobGrade", B.GetPlayerJobGrade)
-exports("HasPermission", B.HasPermission)
-exports("AddMoney", B.AddMoney)
-exports("RemoveMoney", B.RemoveMoney)
-exports("RemoveBankMoney", B.RemoveBankMoney)
-exports("GetMoney", B.GetMoney)
-exports("GetBankMoney", B.GetBankMoney)
-exports("TransferMoney", B.TransferMoney)
-exports("AddItem", B.AddItem)
-exports("RemoveItem", B.RemoveItem)
-exports("GetItem", B.GetItem)
-exports("CanCarryItem", B.CanCarryItem)
-exports("SetJob", B.SetJob)
-exports("GetIdentifier", B.GetIdentifier)
-exports("GetPlayerCoords", B.GetPlayerCoords)
+exports("GetPlayer", function(id)
+    Debug(GetInvokingResource(), "GetPlayer", id)
+    return B:GetPlayer(id)
+end)
+
+exports("GetAllPlayers", function()
+    Debug(GetInvokingResource(), "GetAllPlayers")
+    return B:GetAllPlayers()
+end)
+
+exports("GetPlayerJob", function(id)
+    Debug(GetInvokingResource(), "GetPlayerJob", id)
+    return B:GetPlayerJob(id)
+end)
+
+exports("GetPlayerJobGrade", function(id)
+    Debug(GetInvokingResource(), "GetPlayerJobGrade", id)
+    return B:GetPlayerJobGrade(id)
+end)
+
+exports("HasPermission", function(playerId)
+    Debug(GetInvokingResource(), "HasPermission", playerId)
+    return B:HasPermission(playerId)
+end)
+
+exports("AddMoney", function(playerId, amount)
+    Debug(GetInvokingResource(), "AddMoney", playerId, amount)
+    return B:AddMoney(playerId, amount)
+end)
+
+exports("RemoveMoney", function(playerId, amount)
+    Debug(GetInvokingResource(), "RemoveMoney", playerId, amount)
+    return B:RemoveMoney(playerId, amount)
+end)
+
+exports("RemoveBankMoney", function(playerId, amount)
+    Debug(GetInvokingResource(), "RemoveBankMoney", playerId, amount)
+    return B:RemoveBankMoney(playerId, amount)
+end)
+
+exports("GetMoney", function(playerId)
+    Debug(GetInvokingResource(), "GetMoney", playerId)
+    return B:GetMoney(playerId)
+end)
+
+exports("GetBankMoney", function(playerId)
+    Debug(GetInvokingResource(), "GetBankMoney", playerId)
+    return B:GetBankMoney(playerId)
+end)
+
+exports("TransferMoney", function(from, to, amount)
+    Debug(GetInvokingResource(), "TransferMoney", from, to, amount)
+    return B:TransferMoney(from, to, amount)
+end)
+
+exports("AddItem", function(playerId, item_name, amount)
+    Debug(GetInvokingResource(), "AddItem", playerId, item_name, amount)
+    return B:AddItem(playerId, item_name, amount)
+end)
+
+exports("RemoveItem", function(playerId, item_name, amount)
+    Debug(GetInvokingResource(), "RemoveItem", playerId, item_name, amount)
+    return B:RemoveItem(playerId, item_name, amount)
+end)
+
+exports("GetItem", function(playerId, item_name)
+    Debug(GetInvokingResource(), "GetItem", playerId, item_name)
+    return B:GetItem(playerId, item_name)
+end)
+
+exports("CanCarryItem", function(playerId, item_name, amount)
+    Debug(GetInvokingResource(), "CanCarryItem", playerId, item_name, amount)
+    return B:CanCarryItem(playerId, item_name, amount)
+end)
+
+exports("SetJob", function(playerId, job_name, job_grade)
+    Debug(GetInvokingResource(), "SetJob", playerId, job_name, job_grade)
+    return B:SetJob(playerId, job_name, job_grade)
+end)
+
+exports("GetIdentifier", function(playerId)
+    Debug(GetInvokingResource(), "GetIdentifier", playerId)
+    return B:GetIdentifier(playerId)
+end)
+
+exports("GetPlayerCoords", function(playerId)
+    Debug(GetInvokingResource(), "GetPlayerCoords", playerId)
+    return B:GetPlayerCoords(playerId)
+end)

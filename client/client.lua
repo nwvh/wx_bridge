@@ -23,6 +23,7 @@ end
 ---Returns current's player data, like the character info (name, job, ...). Returned data may vary depending on the framework
 ---@return table
 function B:GetPlayerData()
+    Debug(GetInvokingResource(), "GetPlayerData")
     if framework == "esx" then
         return ESX.GetPlayerData()
     end
@@ -32,6 +33,7 @@ end
 ---Returns boolean if player has chosen his character
 ---@return boolean
 function B:IsPlayerLoaded()
+    Debug(GetInvokingResource(), "IsPlayerLoaded")
     if framework == "esx" then
         return ESX.IsPlayerLoaded()
     end
@@ -42,6 +44,7 @@ end
 ---@param key string
 ---@param value any
 function B:SetPlayerData(key, value)
+    Debug(GetInvokingResource(), "SetPlayerData", key, value)
     if framework == "esx" then
         ESX.SetPlayerData(key, value)
     end
@@ -49,6 +52,7 @@ end
 
 ---Opens inventory through the framework
 function B:OpenInventory()
+    Debug(GetInvokingResource(), "OpenInventory")
     if framework == "esx" then
         ESX.ShowInventory()
     end
@@ -57,6 +61,7 @@ end
 ---Shows notification thorough the framework
 ---@param text string
 function B:ShowNotification(text)
+    Debug(GetInvokingResource(), "ShowNotification", text)
     if framework == "esx" then
         ESX.ShowNotification(text)
     elseif framework == "qb" then
@@ -70,8 +75,22 @@ end
 -- end
 
 
-exports("GetPlayerData", B.GetPlayerData)
-exports("IsPlayerLoaded", B.IsPlayerLoaded)
-exports("SetPlayerData", B.SetPlayerData)
-exports("OpenInventory", B.OpenInventory)
-exports("ShowNotification", B.ShowNotification)
+exports("GetPlayerData", function()
+    return B:GetPlayerData()
+end)
+
+exports("IsPlayerLoaded", function()
+    return B:IsPlayerLoaded()
+end)
+
+exports("SetPlayerData", function(key, value)
+    B:SetPlayerData(key, value)
+end)
+
+exports("OpenInventory", function()
+    B:OpenInventory()
+end)
+
+exports("ShowNotification", function(text)
+    B:ShowNotification(text)
+end)
