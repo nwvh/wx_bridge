@@ -43,13 +43,16 @@ print(json.encode(PlayerData, {
 | `exports.wx_bridge:GetMoney(playerId)`           | Retrieves player's money (with most frameworks from their inventory)          | `playerId` (number)                     | number            |
 | `exports.wx_bridge:GetBankMoney(playerId)`       | Retrieves player's money from bank.                                           | `playerId` (number)                     | number            |
 | `exports.wx_bridge:TransferMoney(from, to, amount)` | Transfers bank money from one player to another                              | `from` (number), `to` (number), `amount` (number) | boolean, string |
+| `exports.wx_bridge:GetItem(playerId, item_name)` | Retrieves info about an item from player's inventory.                         | `playerId` (number), `item_name` (string)        | table             |
+| `exports.wx_bridge:CanCarryItem(playerId, item_name, amount)` | Returns boolean - Checks if player can carry the given item and count.   | `playerId` (number), `item_name` (string), `amount` (number) | boolean           |
+| `exports.wx_bridge:SetJob(playerId, job_name, job_grade)` | Set player's job.                                                           | `playerId` (number), `job_name` (string), `job_grade` (number) | None              |
+| `exports.wx_bridge:GetIdentifier(playerId)`      | Returns player's rockstar identifier.                                          | `playerId` (number)                              | string            |
+| `exports.wx_bridge:GetPlayerCoords(playerId)`    | Returns the coords of given player ID.                                         | `playerId` (number)                              | vector3           |
 
-### Example: Getting Player's Job
 
-```lua
-local jobId = exports.wx_bridge:GetPlayerJob(playerId)
-print("Player's job ID: " .. jobId)
-
+# TODO
+* More frameworks ([ND_Core](https://github.com/ND-Framework/ND_Core), [ox_core](https://github.com/overextended/ox_core))
+* More functions for QB Core
 
 ## Contributing
 Contributions are welcome! If you have any suggestions or improvements, please submit a pull request or open an issue.
