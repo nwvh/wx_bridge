@@ -66,6 +66,8 @@ function B:GetAllPlayers()
     Debug(GetInvokingResource(), "GetAllPlayers")
     if framework == "esx" then
         return ESX.GetPlayers()
+    elseif framework == "qb" then
+        return QBCore.Functions.GetPlayers()
     end
     return {}
 end

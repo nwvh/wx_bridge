@@ -11,7 +11,7 @@ if wx.Framework:lower() == "auto" then
         local nd_core = GetResourceState('nd_core') == "started"
 
         if qb then
-            framework = "qb" --! TODO: QB Core Support
+            framework = "qb" --! TODO: Full QB Core Support
         elseif esx then
             framework = "esx"
         elseif ox_core then
@@ -64,6 +64,8 @@ function B:GetPlayerData()
     Debug(GetInvokingResource(), "GetPlayerData")
     if framework == "esx" then
         return ESX.GetPlayerData()
+    elseif framework == "qb" then
+        return QBCore.Functions.GetPlayerData()
     end
     return {}
 end
@@ -74,6 +76,8 @@ function B:IsPlayerLoaded()
     Debug(GetInvokingResource(), "IsPlayerLoaded")
     if framework == "esx" then
         return ESX.IsPlayerLoaded()
+    elseif framework == "qb" then
+        return QBCore.isPlayerLoaded()
     end
     return false
 end
@@ -85,6 +89,8 @@ function B:SetPlayerData(key, value)
     Debug(GetInvokingResource(), "SetPlayerData", key, value)
     if framework == "esx" then
         ESX.SetPlayerData(key, value)
+    elseif framework == "qb" then
+        return error("QB Core doesn't support SetPlayerData!") -- afaik
     end
 end
 
@@ -93,6 +99,8 @@ function B:OpenInventory()
     Debug(GetInvokingResource(), "OpenInventory")
     if framework == "esx" then
         ESX.ShowInventory()
+    elseif framework == "qb" then
+        TriggerEvent("inventory:client:OpenInventory") -- Couldn't find any other function in QB
     end
 end
 
@@ -156,7 +164,7 @@ end
 ---Returns player's job name
 ---@return string
 function B:GetJob()
-    if framework == "esx" then
+    if framework == "esx" or framework == "qb" then
         return B:GetPlayerData().job.name
     end
     return "unemployed"
@@ -167,6 +175,8 @@ end
 function B:GetJobGrade()
     if framework == "esx" then
         return B:GetPlayerData().job.grade
+    elseif framework == "qb" then
+        return B:GetPlayerData().job.grade.level
     end
     return 0
 end
@@ -183,6 +193,8 @@ function B:HasItem(item_name)
                 return true, count
             end
         end
+    elseif framework == "qb" then
+        return QBCore.Functions.HasItem(item_name), 0 --! TODO: Retrieve item count in QB
     end
     return false, 0
 end
@@ -193,6 +205,8 @@ function B:GetInventory()
     if framework == "esx" then
         local playerData = B:GetPlayerData()
         return playerData.inventory
+    elseif framework == "qb" then
+        return QBCore.Functions.GetPlayerData().items
     end
     return {}
 end
