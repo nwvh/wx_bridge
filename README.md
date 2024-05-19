@@ -28,7 +28,7 @@ print(json.encode(PlayerData, {
 | `exports.wx_bridge:Dispatch(code, title, message, blip, jobs, important)` | Client side function for police dispatch | `code` (string), `title` (string), `message` (string), `blip` (number), `jobs` (table), `important` (boolean \| number) | None |
 | `exports.wx_bridge:GetJob()` | Returns player's job name | None | string |
 | `exports.wx_bridge:GetJobGrade()` | Returns player's job grade number | None | number |
-| `exports.wx_bridge:HasItem(item_name)` | Returns boolean - Checks if player has given item in inventory | `item_name` (string) | boolean |
+| `exports.wx_bridge:HasItem(item_name)` | Returns boolean and item count - Checks if player has given item in inventory | `item_name` (string) | boolean, number |
 | `exports.wx_bridge:GetInventory()` | Returns player's inventory contents | None | table |
 
 ### Server

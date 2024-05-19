@@ -1,6 +1,33 @@
 BRIDGE = {}
-local framework = wx.Framework:lower()
+local framework
 local B = BRIDGE
+
+if wx.Framework:lower() == "auto" then
+    CreateThread(function()
+        local qb = GetResourceState('qb-core') == "started"
+        local esx = GetResourceState('es_extended') == "started"
+        local ox_core = GetResourceState('ox_core') == "started"
+        local nd_core = GetResourceState('nd_core') == "started"
+
+        if qb then
+            framework = "qb" --! TODO: QB Core Support
+        elseif esx then
+            framework = "esx"
+        elseif ox_core then
+            framework = "ox" --! TODO: OX Core Support
+        elseif nd_core then
+            framework = "nd" --! TODO: ND Core Support
+        else
+            BetterPrint(
+                "Couldn't detect your framework! Please make sure that wx_bridge starts AFTER your framework resource.",
+                "error"
+            )
+            return error("Unknown Framework")
+        end
+    end)
+else
+    framework = wx.Framework:lower()
+end
 
 if framework == "esx" then
     if GetResourceState("es_extended") ~= "started" then

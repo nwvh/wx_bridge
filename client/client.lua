@@ -2,6 +2,7 @@ local BRIDGE = {}
 local framework
 local B = BRIDGE
 
+-- Eliminate the need to manually configure framework, instead detect it manually
 if wx.Framework:lower() == "auto" then
     CreateThread(function()
         local qb = GetResourceState('qb-core') == "started"
@@ -19,7 +20,9 @@ if wx.Framework:lower() == "auto" then
             framework = "nd" --! TODO: ND Core Support
         else
             BetterPrint(
-                "Couldn't detect your framework! Please make sure that wx_bridge starts AFTER your framework resource.")
+                "Couldn't detect your framework! Please make sure that wx_bridge starts AFTER your framework resource.",
+                "error"
+            )
             return error("Unknown Framework")
         end
     end)
@@ -43,6 +46,16 @@ if framework == "qb" then
             "error")
     end
     QBCore = exports['qb-core']:GetCoreObject()
+end
+
+if framework == "ox" then
+    --TODO: OX Core
+    return
+end
+
+if framework == "nd" then
+    --TODO: ND Core
+    return
 end
 
 ---Returns current's player data, like the character info (name, job, ...). Returned data may vary depending on the framework
@@ -160,16 +173,18 @@ end
 
 ---Returns boolean - Checks if player has given item in inventory
 ---@param item_name string Item name
----@return boolean hasItem Returns true if player has given item in inventory
+---@return boolean, number hasItem Returns true if player has given item in inventory and item count
 function B:HasItem(item_name)
+    local count = 0
     if framework == "esx" then
         for _, v in pairs(B:GetPlayerData().inventory) do
             if v.name == item_name then
-                return true
+                count = v.count
+                return true, count
             end
         end
     end
-    return false
+    return false, 0
 end
 
 ---Returns player's inventory contents
