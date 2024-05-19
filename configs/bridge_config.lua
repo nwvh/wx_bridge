@@ -1,7 +1,8 @@
 wx = {}
 
-wx.Debug = true      -- Enables debug prints
-wx.Framework = "esx" -- [esx / qb / custom] QB Support is partial
+wx.Debug = true             -- Enables debug prints
+wx.Framework = "auto"       -- [auto / esx / qb / custom]
+wx.Dispatch = "cd_dispatch" -- [cd_dispatch / linden / custom]
 
 wx.AdminGroups = {
     ["owner"] = true,
