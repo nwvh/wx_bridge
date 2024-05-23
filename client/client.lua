@@ -2,6 +2,9 @@ local BRIDGE = {}
 local framework
 local B = BRIDGE
 
+local ESX, QBCore
+
+
 -- Eliminate the need to manually configure framework, instead detect it manually
 if wx.Framework:lower() == "auto" then
     CreateThread(function()
@@ -11,8 +14,10 @@ if wx.Framework:lower() == "auto" then
         local nd_core = GetResourceState('nd_core') == "started"
 
         if qb then
+            QBCore = exports['qb-core']:GetCoreObject()
             framework = "qb" --! TODO: Full QB Core Support
         elseif esx then
+            ESX = exports["es_extended"]:getSharedObject()
             framework = "esx"
         elseif ox_core then
             framework = "ox" --! TODO: OX Core Support
@@ -36,7 +41,6 @@ if framework == "esx" then
             "Framework has been set to ESX, but es_extended was not found! Make sure you're starting the bridge AFTER es_extended.",
             "error")
     end
-    ESX = exports.es_extended:getSharedObject()
 end
 
 if framework == "qb" then
@@ -45,7 +49,6 @@ if framework == "qb" then
             "Framework has been set to QB Core, but qb-core was not found! Make sure you're starting the bridge AFTER qb-core.",
             "error")
     end
-    QBCore = exports['qb-core']:GetCoreObject()
 end
 
 if framework == "ox" then
@@ -63,7 +66,8 @@ end
 function B:GetPlayerData()
     Debug(GetInvokingResource(), "GetPlayerData")
     if framework == "esx" then
-        return ESX.GetPlayerData()
+        local data = ESX.GetPlayerData()
+        return data
     elseif framework == "qb" then
         return QBCore.Functions.GetPlayerData()
     end
@@ -165,7 +169,7 @@ end
 ---@return string
 function B:GetJob()
     if framework == "esx" or framework == "qb" then
-        return B:GetPlayerData().job.name
+        return B:GetPlayerData().job.name or "unemployed"
     end
     return "unemployed"
 end
@@ -227,7 +231,7 @@ end
 
 
 exports("GetPlayerData", function()
-    return B:GetPlayerData()
+    B:GetPlayerData()
 end)
 
 exports("IsPlayerLoaded", function()
