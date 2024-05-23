@@ -30,6 +30,7 @@ print(json.encode(PlayerData, {
 | `exports.wx_bridge:GetJobGrade()` | Returns player's job grade number | None | number |
 | `exports.wx_bridge:HasItem(item_name)` | Returns boolean and item count - Checks if player has given item in inventory | `item_name` (string) | boolean, number |
 | `exports.wx_bridge:GetInventory()` | Returns player's inventory contents | None | table |
+| `exports.wx_bridge:CloseMenu()` | Closes any open menu | None | None |
 
 ### Server
 
