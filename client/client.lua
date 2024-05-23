@@ -211,6 +211,15 @@ function B:GetInventory()
     return {}
 end
 
+---Closes any open menu (like esx_menu_default)
+function B:CloseMenu()
+    if framework == "esx" then
+        ESX.UI.Menu.CloseAll()
+    elseif framework == "qb" then
+        TriggerEvent("qb-menu:client:closeMenu")
+    end
+end
+
 -- function B:Example()
 --     if framework == "esx" then
 --     end
@@ -255,4 +264,8 @@ end)
 
 exports("GetInventory", function()
     return B:GetInventory()
+end)
+
+exports("CloseMenu", function()
+    return B:CloseMenu()
 end)
