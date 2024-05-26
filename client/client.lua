@@ -231,7 +231,7 @@ end
 
 
 exports("GetPlayerData", function()
-    B:GetPlayerData()
+    return B:GetPlayerData()
 end)
 
 exports("IsPlayerLoaded", function()
